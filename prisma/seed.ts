@@ -15,6 +15,7 @@ async function main() {
       clienteNome: 'João Silva',
       clienteDocumento: '11122233344',
       enderecoEntrega: 'Rua das Flores, 123, Rio de Janeiro - RJ',
+      status: 'PENDENTE',
       items: {
         create: [
           { descricao: 'Roteador Wi-Fi 6', preco: 350.90 },
@@ -31,6 +32,7 @@ async function main() {
       clienteNome: 'Maria Souza',
       clienteDocumento: '55566677788',
       enderecoEntrega: 'Avenida Paulista, 1000, São Paulo - SP',
+      status: 'PENDENTE',
       items: {
         create: [
           { descricao: 'Monitor 24 polegadas', preco: 850.50 },
@@ -46,6 +48,7 @@ async function main() {
       clienteNome: 'Carlos Almeida',
       clienteDocumento: '99988877766',
       enderecoEntrega: 'Rua do Ouvidor, 50, Centro, Rio de Janeiro - RJ',
+      status: 'PENDENTE',
       items: {
         create: [
           { descricao: 'Cadeira de Escritório', preco: 600.00 },

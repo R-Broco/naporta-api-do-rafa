@@ -14,15 +14,17 @@ model Pedido {
   clienteNome         String
   clienteDocumento    String
   enderecoEntrega     String
-  dataCriacao         DateTime  @default(now())
-  deletedAt           DateTime? 
+  status              String    @default("PENDENTE")
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  deletedAt           DateTime?
   items               Item[]
 }
 
 model Item {
-  id        String   @id @default(uuid())
-  descricao String
-  preco     Decimal  @db.Decimal(10, 2)
-  pedidoId  String
-  pedido    Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  descricao   String
+  preco       Decimal  @db.Decimal(10, 2)
+  pedidoId    String
+  pedido      Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
 }

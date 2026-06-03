@@ -6,7 +6,9 @@ CREATE TABLE "Pedido" (
     "clienteNome" TEXT NOT NULL,
     "clienteDocumento" TEXT NOT NULL,
     "enderecoEntrega" TEXT NOT NULL,
-    "dataCriacao" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "status" TEXT NOT NULL DEFAULT 'PENDENTE',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "Pedido_pkey" PRIMARY KEY ("id")

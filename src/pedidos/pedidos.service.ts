@@ -7,23 +7,58 @@ import { PrismaService } from '../prisma/prisma.service';
 export class PedidosService {
   constructor(private prisma: PrismaService) {}
 
-  create(createPedidoDto: CreatePedidoDto) {
-    return 'This action adds a new pedido';
+  async create(createPedidoDto: CreatePedidoDto) {
+    return this.prisma.pedido.create({
+      data: {
+        numero: createPedidoDto.numero,
+        dataPrevisaoEntrega: new Date(createPedidoDto.dataPrevisaoEntrega),
+        clienteNome: createPedidoDto.clienteNome,
+        clienteDocumento: createPedidoDto.clienteDocumento,
+        enderecoEntrega: createPedidoDto.enderecoEntrega,
+        status: createPedidoDto.status || 'PENDENTE',
+        items: {
+          create: createPedidoDto.items,
+        },
+      },
+      include: { items: true },
+    });
   }
 
-  findAll() {
-    return `This action returns all pedidos`;
+  async findAll(filters: { numero?: string; status?: string; dataInicial?: string; dataFinal?: string }) {
+    const where: any = { deletedAt: null };
+
+    if (filters.numero) {
+      where.numero = { contains: filters.numero, mode: 'insensitive' };
+    }
+
+    if (filters.status) {
+      where.status = { equals: filters.status, mode: 'insensitive' };
+    }
+
+    if (filters.dataInicial || filters.dataFinal) {
+      where.createdAt = {};
+      if (filters.dataInicial) where.createdAt.gte = new Date(filters.dataInicial);
+      if (filters.dataFinal) where.createdAt.lte = new Date(filters.dataFinal);
+    }
+
+    return this.prisma.pedido.findMany({
+      where,
+      include: { items: true },
+    });
   }
 
-  findOne(id: string) { // Mudado de number para string
-    return `This action returns a #${id} pedido`;
+  findOne(id: string) {
+    return this.prisma.pedido.findFirst({
+      where: { id, deletedAt: null },
+      include: { items: true },
+    });
   }
 
-  update(id: string, updatePedidoDto: UpdatePedidoDto) { // Mudado de number para string
+  update(id: string, updatePedidoDto: UpdatePedidoDto) {
     return `This action updates a #${id} pedido`;
   }
 
-  remove(id: string) { // Mudado de number para string
+  remove(id: string) {
     return `This action removes a #${id} pedido`;
   }
 }
