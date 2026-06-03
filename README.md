@@ -10,6 +10,13 @@ Web API RESTful desenvolvida para o desafio de Back-End da naPorta. O núcleo da
 - **ORM:** Prisma
 - **Segurança:** Autenticação via JWT (Bearer Token)
 
+## 🧠 Decisões Arquiteturais e de Infraestrutura
+- **PostgreSQL Serverless (Neon.tech em São Paulo - AWS `sa-east-1`):** Visando mitigar limitações severas de hardware local (travamentos constantes ao tentar rodar instâncias pesadas de banco de dados ou contêineres Docker no notebook de desenvolvimento), adotei a infraestrutura em nuvem serverless da Neon.tech na região de São Paulo. A abordagem foi implementada após mentoria técnica com o engenheiro de software José (.NET), garantindo latência mínima nas consultas e zero sobrecarga na máquina local.
+- **Validação Ágil via PowerShell:** Para manter o ambiente de desenvolvimento leve e performático, o ciclo de testes de integração e o consumo das rotas HTTP protegidas por JWT foram validados nativamente através de scripts no console do **PowerShell** utilizando o comando `Invoke-RestMethod`.
+- **Soft Delete Nativo:** A remoção de pedidos foi implementada via exclusão lógica. Em vez de apagar o registro fisicamente, a coluna `deletedAt` recebe o *timestamp* da operação. Isso garante integridade de auditoria e oculta o dado das listagens e buscas por ID automaticamente.
+- **Precisão Decimal:** Os valores monetários dos itens foram configurados como `Decimal(10,2)` no banco de dados, blindando o sistema contra anomalias de arredondamento comuns no ponto flutuante do JavaScript.
+
+
 ## ⚙️ Pré-requisitos
 Para rodar este projeto, você precisará ter instalado em sua máquina:
 - [Node.js](https://nodejs.org/) (Versão 20+ recomendada)
