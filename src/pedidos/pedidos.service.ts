@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -47,18 +47,50 @@ export class PedidosService {
     });
   }
 
-  findOne(id: string) {
-    return this.prisma.pedido.findFirst({
-      where: { id, deletedAt: null },
+  async findOne(id: string) {
+    const pedido = await this.prisma.pedido.findFirst({
+      where: { 
+        id, 
+        deletedAt: null 
+      },
+      include: { 
+        items: true 
+      },
+    });
+
+    if (!pedido) {
+      throw new NotFoundException(`Pedido com ID ${id} não encontrado.`);
+    }
+
+    return pedido;
+  }
+
+  async update(id: string, updatePedidoDto: UpdatePedidoDto) {
+    await this.findOne(id);
+
+    // Isola 'items' para que o rest contendo apenas dados do Pedido vá para o banco
+    const { items, ...dadosDoPedido } = updatePedidoDto;
+
+    return this.prisma.pedido.update({
+      where: { id },
+      data: {
+        ...dadosDoPedido,
+        dataPrevisaoEntrega: dadosDoPedido.dataPrevisaoEntrega 
+          ? new Date(dadosDoPedido.dataPrevisaoEntrega) 
+          : undefined,
+      },
       include: { items: true },
     });
   }
 
-  update(id: string, updatePedidoDto: UpdatePedidoDto) {
-    return `This action updates a #${id} pedido`;
-  }
+  async remove(id: string) {
+    await this.findOne(id);
 
-  remove(id: string) {
-    return `This action removes a #${id} pedido`;
+    return this.prisma.pedido.update({
+      where: { id },
+      data: { 
+        deletedAt: new Date() 
+      },
+    });
   }
 }
