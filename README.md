@@ -1,98 +1,69 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Desafio Back-End naPorta API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Web API RESTful desenvolvida para o desafio de Back-End da naPorta. O núcleo da aplicação é um sistema de gerenciamento de Pedidos (CRUD) com relacionamentos, filtros dinâmicos e exclusão lógica, protegido por autenticação JWT.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**Autor:** Rafael Broco
 
-## Description
+## 🚀 Tecnologias Utilizadas
+- **Framework:** NestJS (Node.js/TypeScript)
+- **Banco de Dados:** PostgreSQL (Hospedado via Neon.tech)
+- **ORM:** Prisma
+- **Segurança:** Autenticação via JWT (Bearer Token)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ⚙️ Pré-requisitos
+Para rodar este projeto, você precisará ter instalado em sua máquina:
+- [Node.js](https://nodejs.org/) (Versão 20+ recomendada)
+- [Git](https://git-scm.com/)
 
-## Project setup
+## 🛠️ Como Executar o Projeto Localmente
 
+### 1. Clonar o Repositório e Instalar Dependências
+Abra o seu terminal e execute:
 ```bash
-$ npm install
+git clone <COLOQUE_AQUI_O_LINK_DO_SEU_REPOSITORIO>
+cd naporta-api
+npm install
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+### 2. Configurar as Variáveis de Ambiente
+Na raiz do projeto, crie um arquivo chamado `.env` e adicione a string de conexão do banco de dados PostgreSQL.
+```env
+DATABASE_URL="postgresql://USUARIO:SENHA@HOST:PORTA/BANCO?sslmode=require"
 ```
 
-## Run tests
+### 3. Estruturar e Popular o Banco de Dados (Seed)
+A aplicação possui um script nativo para popular o banco de dados inicialmente com pedidos fictícios para fins de demonstração. Para sincronizar as tabelas e injetar os dados, execute os comandos abaixo em ordem:
 
 ```bash
-# unit tests
-$ npm run test
+# 1. Gerar os artefatos locais do Prisma Client
+npx prisma generate
 
-# e2e tests
-$ npm run test:e2e
+# 2. Sincronizar as tabelas no banco de dados
+npx prisma migrate dev
 
-# test coverage
-$ npm run test:cov
+# 3. Executar o script de Seed para injetar os dados fictícios
+npx ts-node --transpile-only prisma/seed.ts
 ```
+*Nota: O script de seed limpará registros antigos e criará 3 pedidos completos com seus respectivos itens.*
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 4. Iniciar o Servidor
+Com o banco configurado e populado, inicie a aplicação em modo de desenvolvimento:
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run start:dev
 ```
+O servidor estará rodando em `http://localhost:3000`.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🔒 Como Testar a API
 
-## Resources
+Todas as rotas de pedidos são protegidas. É necessário gerar um token para realizar as requisições.
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+1. **Gerar Token (Login Simulado):**
+   Faça um `POST` para `http://localhost:3000/auth/login` (não é necessário enviar body). Copie o `access_token` retornado.
+2. **Autenticar Requisições:**
+   Nas rotas seguintes, adicione no Header da requisição: `Authorization: Bearer <SEU_TOKEN>`.
+3. **Rotas Disponíveis:**
+   - `POST /pedidos` - Cria um novo pedido.
+   - `GET /pedidos` - Lista os pedidos (Aceita Query Params para filtros dinâmicos: `?numero=X`, `?dataInicial=Y`, `?dataFinal=Z`).
+   - `GET /pedidos/:id` - Busca um pedido específico.
+   - `PATCH /pedidos/:id` - Atualiza dados do pedido.
+   - `DELETE /pedidos/:id` - Realiza o Soft Delete do pedido.
