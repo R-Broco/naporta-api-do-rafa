@@ -32,7 +32,7 @@ Abra o seu terminal e execute:
 Abra o seu terminal e execute:
 
 ```bash
-git clone [https://github.com/R-Broco/naporta-api-do-rafa.git](https://github.com/R-Broco/naporta-api-do-rafa.git)
+git clone https://github.com/R-Broco/naporta-api-do-rafa.git
 cd naporta-api-do-rafa
 npm install
 ```
