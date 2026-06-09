@@ -27,9 +27,13 @@ Para rodar este projeto, você precisará ter instalado em sua máquina:
 
 ### 1. Clonar o Repositório e Instalar Dependências
 Abra o seu terminal e execute:
+
+### 1. Clonar o Repositório e Instalar Dependências
+Abra o seu terminal e execute:
+
 ```bash
-git clone <COLOQUE_AQUI_O_LINK_DO_SEU_REPOSITORIO>
-cd naporta-api
+git clone [https://github.com/R-Broco/naporta-api-do-rafa.git](https://github.com/R-Broco/naporta-api-do-rafa.git)
+cd naporta-api-do-rafa
 npm install
 ```
 
