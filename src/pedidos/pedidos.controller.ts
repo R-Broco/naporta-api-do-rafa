@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpCode,
 import { PedidosService } from './pedidos.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // Caminho ajustado para a raiz do Auth
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('pedidos')
@@ -15,7 +15,7 @@ export class PedidosController {
   }
 
   @Get()
-  findAll(@Query() filters: { numero?: string; status?: string; dataInicial?: string; dataFinal?: string }) {
+  findAll(@Query() filters: { numero?: string; status?: string; dataInicial?: string; dataFinal?: string; excluidos?: string }) {
     return this.pedidosService.findAll(filters);
   }
 

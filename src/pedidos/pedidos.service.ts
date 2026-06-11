@@ -24,8 +24,16 @@ export class PedidosService {
     });
   }
 
-  async findAll(filters: { numero?: string; status?: string; dataInicial?: string; dataFinal?: string }) {
-    const where: any = { deletedAt: null };
+  async findAll(filters: { numero?: string; status?: string; dataInicial?: string; dataFinal?: string; excluidos?: string }) {
+    const where: any = {};
+
+    if (filters.excluidos === 'true') {
+      where.deletedAt = { not: null };
+    } else if (filters.excluidos === 'all') {
+      
+    } else {
+      where.deletedAt = null;
+    }
 
     if (filters.numero) {
       where.numero = { contains: filters.numero, mode: 'insensitive' };
@@ -68,7 +76,6 @@ export class PedidosService {
   async update(id: string, updatePedidoDto: UpdatePedidoDto) {
     await this.findOne(id);
 
-    // Isola 'items' para que o rest contendo apenas dados do Pedido vá para o banco
     const { items, ...dadosDoPedido } = updatePedidoDto;
 
     return this.prisma.pedido.update({
