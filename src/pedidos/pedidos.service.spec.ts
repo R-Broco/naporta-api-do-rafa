@@ -6,7 +6,6 @@ describe('PedidosService', () => {
   let service: PedidosService;
   let prisma: PrismaService;
 
-  // Mock simulando o comportamento do banco de dados
   const mockPrismaService = {
     pedido: {
       findMany: jest.fn().mockResolvedValue([
@@ -37,13 +36,11 @@ describe('PedidosService', () => {
   });
 
   it('deve listar os pedidos corretamente', async () => {
-    // Chama o método passando um filtro vazio
     const result = await service.findAll({});
 
-    // Verifica se o Prisma foi chamado
-    expect(prisma.pedido.findMany).toHaveBeenCalled();
+    const spy = jest.spyOn(prisma.pedido, 'findMany');
+    expect(spy).toHaveBeenCalled();
 
-    // Verifica se o resultado é o que a gente simulou no mock
     expect(result).toEqual([
       {
         id: '123',
