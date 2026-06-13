@@ -79,3 +79,17 @@ Todas as rotas de pedidos são protegidas. É necessário gerar um token para re
    - `GET /pedidos/:id` - Busca um pedido específico.
    - `PATCH /pedidos/:id` - Atualiza dados do pedido.
    - `DELETE /pedidos/:id` - Realiza o Soft Delete do pedido.
+
+## 🎁 Itens Bônus Implementados
+
+O projeto foi desenvolvido seguindo padrões rigorosos de qualidade exigidos pelo mercado, cobrindo os seguintes pontos adicionais:
+
+* **Testes Automatizados (Unitários):** Cobertura com **Jest** no escopo dos serviços (`PedidosService`), utilizando simulação completa (**Mocks**) do Prisma Client para testar as regras de negócio sem afetar o banco de dados.
+* **Ambiente de Containerização (Docker):** Arquivo `Dockerfile` otimizado utilizando a imagem leve `node:20-alpine`, pronto para empacotar e distribuir a API para produção.
+* **Análise Estática (Linter):** Projeto 100% aderente às regras estritas do **ESLint** e **TypeScript**, rodando de forma limpa e com tipagem estática segura (Clean Code).
+
+### 🛠️ Como rodar os validadores de qualidade:
+
+* Para rodar a análise estática (Linter): `npm run lint`
+* Para rodar os testes unitários: `npm run test`
+
