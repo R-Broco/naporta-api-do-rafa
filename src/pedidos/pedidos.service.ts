@@ -24,13 +24,18 @@ export class PedidosService {
     });
   }
 
-  async findAll(filters: { numero?: string; status?: string; dataInicial?: string; dataFinal?: string; excluidos?: string }) {
+  async findAll(filters: {
+    numero?: string;
+    status?: string;
+    dataInicial?: string;
+    dataFinal?: string;
+    excluidos?: string;
+  }) {
     const where: any = {};
 
     if (filters.excluidos === 'true') {
       where.deletedAt = { not: null };
     } else if (filters.excluidos === 'all') {
-      
     } else {
       where.deletedAt = null;
     }
@@ -45,7 +50,8 @@ export class PedidosService {
 
     if (filters.dataInicial || filters.dataFinal) {
       where.createdAt = {};
-      if (filters.dataInicial) where.createdAt.gte = new Date(filters.dataInicial);
+      if (filters.dataInicial)
+        where.createdAt.gte = new Date(filters.dataInicial);
       if (filters.dataFinal) where.createdAt.lte = new Date(filters.dataFinal);
     }
 
@@ -57,12 +63,12 @@ export class PedidosService {
 
   async findOne(id: string) {
     const pedido = await this.prisma.pedido.findFirst({
-      where: { 
-        id, 
-        deletedAt: null 
+      where: {
+        id,
+        deletedAt: null,
       },
-      include: { 
-        items: true 
+      include: {
+        items: true,
       },
     });
 
@@ -82,8 +88,8 @@ export class PedidosService {
       where: { id },
       data: {
         ...dadosDoPedido,
-        dataPrevisaoEntrega: dadosDoPedido.dataPrevisaoEntrega 
-          ? new Date(dadosDoPedido.dataPrevisaoEntrega) 
+        dataPrevisaoEntrega: dadosDoPedido.dataPrevisaoEntrega
+          ? new Date(dadosDoPedido.dataPrevisaoEntrega)
           : undefined,
       },
       include: { items: true },
@@ -95,8 +101,8 @@ export class PedidosService {
 
     return this.prisma.pedido.update({
       where: { id },
-      data: { 
-        deletedAt: new Date() 
+      data: {
+        deletedAt: new Date(),
       },
     });
   }

@@ -4,33 +4,33 @@ import { Type } from 'class-transformer';
 class CreateItemDto {
   @IsString()
   @IsNotEmpty()
-  descricao: string;
+  descricao!: string;
 
   @IsNumber()
   @IsNotEmpty()
-  preco: number;
+  preco!: number;
 }
 
 export class CreatePedidoDto {
   @IsString()
   @IsNotEmpty()
-  numero: string;
+  numero!: string;
 
   @IsDateString()
   @IsNotEmpty()
-  dataPrevisaoEntrega: string;
+  dataPrevisaoEntrega!: string;
 
   @IsString()
   @IsNotEmpty()
-  clienteNome: string;
+  clienteNome!: string;
 
   @IsString()
   @IsNotEmpty()
-  clienteDocumento: string;
+  clienteDocumento!: string;
 
   @IsString()
   @IsNotEmpty()
-  enderecoEntrega: string;
+  enderecoEntrega!: string;
 
   @IsString()
   @IsOptional()
@@ -39,5 +39,5 @@ export class CreatePedidoDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateItemDto)
-  items: CreateItemDto[];
+  items!: CreateItemDto[];
 }
