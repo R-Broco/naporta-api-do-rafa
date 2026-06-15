@@ -40,8 +40,8 @@ DATABASE_URL="postgresql://USUARIO:SENHA@HOST:PORTA/BANCO?sslmode=require"
 ```
 
 ### 3. Estruturar e Popular o Banco de Dados (Seed)
-A aplicação possui um script nativo para popular o banco de dados inicialmente com pedidos fictícios para fins de demonstração. Para sincronizar as tabelas e injetar os dados, execute os comandos abaixo em ordem:
 
+A aplicação possui um script nativo para popular o banco de dados inicialmente com pedidos fictícios para fins de demonstração. Para sincronizar as tabelas e injetar os dados, execute os comandos abaixo em ordem:
 ```bash
 # 1. Gerar os artefatos locais do Prisma Client
 npx prisma generate
@@ -50,9 +50,10 @@ npx prisma generate
 npx prisma migrate dev
 
 # 3. Executar o script de Seed para injetar os dados fictícios
-npx ts-node --transpile-only prisma/seed.ts
+npx prisma db seed
 ```
 *Nota: O script de seed limpará registros antigos e criará 3 pedidos completos com seus respectivos itens.*
+
 
 ### 4. Iniciar o Servidor
 Com o banco configurado e populado, inicie a aplicação em modo de desenvolvimento:
