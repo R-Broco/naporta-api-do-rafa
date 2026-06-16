@@ -1,3 +1,4 @@
+// Configuração de conexão com o banco de dados e geração do Client tipado
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -7,6 +8,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
+// Entidade agregadora de Pedidos com suporte a Soft Delete e relacionamento 1:N
 model Pedido {
   id                  String    @id @default(uuid())
   numero              String    @unique
@@ -21,6 +24,7 @@ model Pedido {
   items               Item[]
 }
 
+// Itens vinculados ao pedido com precisão decimal fixa e deleção em cascata
 model Item {
   id          String   @id @default(uuid())
   descricao   String
