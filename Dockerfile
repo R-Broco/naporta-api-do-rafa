@@ -11,6 +11,7 @@ RUN npx prisma generate
 COPY . .
 
 RUN npm run build
+RUN echo "--- INSPECAO DE ESTRUTURA DA PASTA DIST ---" && ls -R dist
 
 FROM node:20-alpine
 
