@@ -59,7 +59,15 @@ export class MetricsExceptionFilter implements ExceptionFilter {
     const { method, url } = request;
 
     if (url === '/metrics' || url.includes('/favicon.ico')) {
-      return;
+      const statusCode = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+      if (statusCode === HttpStatus.UNAUTHORIZED) {
+        response.setHeader('WWW-Authenticate', 'Basic realm="Prometheus Metrics"');
+        return response.status(HttpStatus.UNAUTHORIZED).json({
+          statusCode: HttpStatus.UNAUTHORIZED,
+          message: 'Unauthorized',
+        });
+      }
+      return response.status(HttpStatus.OK).send();
     }
 
     const statusCode = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
