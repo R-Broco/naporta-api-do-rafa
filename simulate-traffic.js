@@ -1,8 +1,8 @@
 const API_URL = process.env.API_URL || 'https://naporta-api-do-rafa.onrender.com';
 
-async function executeCycle(index) {
+async function executeCycle(iteration) {
   try {
-    // 1. LOGIN
+    // 1. AUTENTICAÇÃO (POST /auth/login)
     const loginRes = await fetch(`${API_URL}/auth/login`, { method: 'POST' });
     if (!loginRes.ok) throw new Error(`Status ${loginRes.status}`);
     const { access_token } = await loginRes.json();
@@ -12,10 +12,10 @@ async function executeCycle(index) {
       'Authorization': `Bearer ${access_token}`
     };
 
-    // 2. GET
+    // 2. READ (GET /pedidos)
     await fetch(`${API_URL}/pedidos`, { headers: authHeaders });
 
-    // 3. POST
+    // 3. CREATE (POST /pedidos)
     const randomId = Math.floor(1000 + Math.random() * 9000);
     const novoPedido = {
       numero: `PED-SYNTH-${randomId}`,
@@ -33,7 +33,7 @@ async function executeCycle(index) {
     const createdData = await createRes.json();
     const pedidoId = createdData.id;
 
-    // 4. PATCH & DELETE
+    // 4. UPDATE & DELETE (PATCH e DELETE /pedidos/:id)
     if (pedidoId) {
       await fetch(`${API_URL}/pedidos/${pedidoId}`, {
         method: 'PATCH',
@@ -47,22 +47,25 @@ async function executeCycle(index) {
       });
     }
 
-    console.log(`[Iteração ${index}/30] ✅ Ciclo de tráfego concluído para ID: ${pedidoId || 'N/A'}`);
+    console.log(`[${new Date().toLocaleTimeString()}] ✅ Ciclo ${iteration} OK (ID: ${pedidoId || 'N/A'})`);
   } catch (error) {
-    console.error(`[Iteração ${index}/30] ❌ Falha:`, error.message);
+    console.error(`[${new Date().toLocaleTimeString()}] ❌ Falha no ciclo ${iteration}:`, error.message);
   }
 }
 
-async function runTrafficBurst() {
-  console.log('🚀 Iniciando rajada sintética de tráfego (30 iterações)...');
-  
-  for (let i = 1; i <= 30; i++) {
-    await executeCycle(i);
-    // Pausa de 1 segundo entre requisições para espalhar no gráfico
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+async function runContinuousTraffic() {
+  console.log('🚀 Iniciando simulação contínua (Duração: 5 minutos com rajadas a cada 5s)...');
+  const startTime = Date.now();
+  const DURATION_MS = 5 * 60 * 1000; // 5 minutos de duração do runner
+  let iteration = 1;
+
+  while (Date.now() - startTime < DURATION_MS) {
+    await executeCycle(iteration++);
+    // Pausa de 5 segundos entre cada ciclo completo de CRUD para alimentar o Grafana continuamente
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   }
-  
-  console.log('🎯 Rajada concluída com sucesso!');
+
+  console.log('🎯 Ciclo de 5 minutos concluído com sucesso!');
 }
 
-runTrafficBurst();
+runContinuousTraffic();
